@@ -1,4 +1,4 @@
-package com.verygoodbank.tes.service.product;
+package com.verygoodbank.tes.service.common.product;
 
 public interface ProductMapper {
 

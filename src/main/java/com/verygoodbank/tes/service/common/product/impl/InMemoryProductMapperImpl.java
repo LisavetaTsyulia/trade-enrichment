@@ -1,8 +1,8 @@
-package com.verygoodbank.tes.service.product.impl;
+package com.verygoodbank.tes.service.common.product.impl;
 
 import com.verygoodbank.tes.model.Product;
-import com.verygoodbank.tes.service.product.ProductMapper;
-import com.verygoodbank.tes.service.CSVParserFile;
+import com.verygoodbank.tes.service.common.product.ProductMapper;
+import com.verygoodbank.tes.service.common.CSVParserFile;
 import com.verygoodbank.tes.util.CSVReadHelper;
 import org.springframework.stereotype.Service;
 

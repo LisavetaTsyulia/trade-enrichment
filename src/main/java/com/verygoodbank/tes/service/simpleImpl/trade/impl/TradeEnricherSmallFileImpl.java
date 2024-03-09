@@ -1,10 +1,10 @@
-package com.verygoodbank.tes.service.trade.impl;
+package com.verygoodbank.tes.service.simpleImpl.trade.impl;
 
 import com.verygoodbank.tes.model.Trade;
 import com.verygoodbank.tes.model.TradeEnriched;
-import com.verygoodbank.tes.service.CSVParserMultipartFile;
-import com.verygoodbank.tes.service.product.ProductMapper;
-import com.verygoodbank.tes.service.trade.TradeEnricher;
+import com.verygoodbank.tes.service.common.CSVParserMultipartFile;
+import com.verygoodbank.tes.service.common.product.ProductMapper;
+import com.verygoodbank.tes.service.simpleImpl.trade.TradeEnricher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +26,7 @@ public class TradeEnricherSmallFileImpl implements TradeEnricher {
 
     private TradeEnriched enrichTrade(final Trade trade) {
         return TradeEnriched.builder()
-                .productName(productMapper.mapIdToName(trade.getProductId()))
+                .product_name(productMapper.mapIdToName(trade.getProductId()))
                 .date(trade.getDate())
                 .price(trade.getPrice())
                 .currency(trade.getCurrency())

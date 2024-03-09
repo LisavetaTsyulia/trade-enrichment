@@ -1,4 +1,4 @@
-package com.verygoodbank.tes.service;
+package com.verygoodbank.tes.service.common;
 
 import java.io.File;
 import java.util.Collection;

@@ -1,8 +1,8 @@
-package com.verygoodbank.tes.service.trade.parser;
+package com.verygoodbank.tes.service.simpleImpl.trade.parser;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.verygoodbank.tes.model.Trade;
-import com.verygoodbank.tes.service.CSVParserMultipartFile;
+import com.verygoodbank.tes.service.common.CSVParserMultipartFile;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

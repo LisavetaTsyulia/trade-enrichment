@@ -4,13 +4,13 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Builder
 public class TradeEnriched {
-    private Date date;
-    private String productName;
+    private String date;
+    private String product_name;
     private String currency;
     private BigDecimal price;
 }

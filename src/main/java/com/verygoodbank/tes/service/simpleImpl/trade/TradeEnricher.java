@@ -1,4 +1,4 @@
-package com.verygoodbank.tes.service.trade;
+package com.verygoodbank.tes.service.simpleImpl.trade;
 
 import com.verygoodbank.tes.model.TradeEnriched;
 import org.springframework.web.multipart.MultipartFile;
