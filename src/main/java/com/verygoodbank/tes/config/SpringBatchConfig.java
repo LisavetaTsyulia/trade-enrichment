@@ -3,6 +3,7 @@ package com.verygoodbank.tes.config;
 import com.verygoodbank.tes.exception.DateFormatValidationException;
 import com.verygoodbank.tes.model.Trade;
 import com.verygoodbank.tes.model.TradeEnriched;
+import com.verygoodbank.tes.service.batchImpl.listener.JobCompletionListener;
 import com.verygoodbank.tes.service.batchImpl.listener.TradeProcessorListener;
 import com.verygoodbank.tes.service.batchImpl.processor.TradeProcessor;
 import com.verygoodbank.tes.service.batchImpl.reader.TradeReader;
@@ -57,9 +58,10 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public Job tradeEnrichJob(final JobRepository jobRepository, final Step step) {
+    public Job tradeEnrichJob(final JobRepository jobRepository, final Step step, JobCompletionListener listener) {
         return new JobBuilder("tradeEnrichJob", jobRepository)
                 .start(step)
+                .listener(listener)
                 .build();
     }
 
