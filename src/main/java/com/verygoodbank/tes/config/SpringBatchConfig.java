@@ -58,10 +58,12 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public Job tradeEnrichJob(final JobRepository jobRepository, final Step step, JobCompletionListener listener) {
+    public Job tradeEnrichJob(final JobRepository jobRepository,
+                              final Step step,
+                              final JobCompletionListener jobCompletionListener) {
         return new JobBuilder("tradeEnrichJob", jobRepository)
                 .start(step)
-                .listener(listener)
+                .listener(jobCompletionListener)
                 .build();
     }
 

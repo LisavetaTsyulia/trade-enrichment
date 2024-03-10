@@ -1,20 +1,20 @@
 package com.verygoodbank.tes.service.common.product.impl;
 
+import com.verygoodbank.tes.constant.TradeEnrichConstant;
 import com.verygoodbank.tes.model.Product;
 import com.verygoodbank.tes.service.common.product.ProductMapper;
 import com.verygoodbank.tes.service.common.CSVParserFile;
-import com.verygoodbank.tes.util.CSVReadHelper;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@Log4j2
 @Service
 public class InMemoryProductMapperImpl implements ProductMapper {
-
-    private static final String MISSING_PRODUCT_NAME = "Missing Product Name";
-    private static final String PRODUCTS_FILE_NAME = "product.csv";
     boolean isInitialized = false;
     Map<Integer, String> mapIdToName = new HashMap<>(); // we don't need concurrency handling here,
     // only write on init and read may be in multi threads, but they are not changing anything
@@ -26,18 +26,22 @@ public class InMemoryProductMapperImpl implements ProductMapper {
         init();
     }
 
-    private void init(){
+    private void init() {
         // read from file and init it's state
-        Collection<Product> products = productCSVParser.parse(CSVReadHelper.getCSVFile(PRODUCTS_FILE_NAME));
+        Instant startedInitProducts = Instant.now();
+        Collection<Product> products = productCSVParser.parse(TradeEnrichConstant.PRODUCTS_FILE_NAME);
         products.forEach(p -> mapIdToName.put(p.getProductId(), p.getProductName()));
         isInitialized = true;
+        Instant finishedInitProducts = Instant.now();
+        log.info("Finished Initializing products that took {} milliseconds. Map size is: {}",
+                finishedInitProducts.toEpochMilli() - startedInitProducts.toEpochMilli(), mapIdToName.size());
     }
 
 
     @Override
     public String mapIdToName(int id) {
         if (isInitialized) {
-           return mapIdToName.getOrDefault(id, MISSING_PRODUCT_NAME);
+            return mapIdToName.getOrDefault(id, TradeEnrichConstant.MISSING_PRODUCT_NAME);
         } // else wait until initialized?
         return "";
     }

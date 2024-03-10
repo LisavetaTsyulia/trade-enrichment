@@ -8,6 +8,7 @@ import com.verygoodbank.tes.service.batchImpl.listener.JobCompletionListener;
 import com.verygoodbank.tes.util.FileHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionException;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -29,18 +30,24 @@ public class TradeResourceEnricher implements ResourceEnricher<File> {
     private final JobCompletionListener jobCompletionListener;
     private final FlatFileItemReader<Trade> reader;
     private final FlatFileItemWriter<TradeEnriched> writer;
+    private JobExecution jobExecution;
 
     @Override
-    public CompletableFuture<File> processResource(final Resource resource) {
+    public CompletableFuture<File> processResource(Resource resource) {
         try {
             reader.setResource(resource);
             File file = FileHelper.createTmpFile();
             writer.setResource(new FileSystemResource(file));
-            jobLauncher.run(job, new JobParameters());
+            jobExecution = jobLauncher.run(job, new JobParameters());
             return jobCompletionListener.getJobCompletionFuture()
                     .thenApply(jobExecution -> file);
         } catch (JobExecutionException e) {
             throw new TradeEnrichJobProcessingException(e);
         }
+    }
+
+    @Override
+    public boolean isAlreadyRunning() {
+        return jobExecution != null && jobExecution.isRunning();
     }
 }

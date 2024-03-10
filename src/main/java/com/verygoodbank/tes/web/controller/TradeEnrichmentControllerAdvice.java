@@ -1,6 +1,7 @@
 package com.verygoodbank.tes.web.controller;
 
 import com.verygoodbank.tes.exception.FileProcessingException;
+import com.verygoodbank.tes.exception.JobBusyException;
 import com.verygoodbank.tes.exception.TradeEnrichJobProcessingException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -34,5 +35,12 @@ public class TradeEnrichmentControllerAdvice extends ResponseEntityExceptionHand
     public ResponseEntity<String> handleFileProcessingException(final RuntimeException ex) {
         log.error(ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(JobBusyException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<String> handleJobBusyException(final RuntimeException ex) {
+        log.error(ex.getMessage());
+        return new ResponseEntity<>("Trade enrich service is currently busy, try later", HttpStatus.CONFLICT);
     }
 }

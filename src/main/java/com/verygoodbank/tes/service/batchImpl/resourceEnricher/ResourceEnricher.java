@@ -8,4 +8,6 @@ import java.util.concurrent.CompletableFuture;
 public interface ResourceEnricher<T> {
 
     CompletableFuture<T> processResource(Resource resource);
+
+    boolean isAlreadyRunning();
 }

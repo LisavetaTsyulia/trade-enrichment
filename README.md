@@ -25,7 +25,23 @@ Also, Spring Batch documentation covered:
 - Scaling and parallel processing scenarios, that is useful for big files: https://docs.spring.io/spring-batch/reference/scalability.html
 - other useful things like monitoring and metrics, logging Processing and Failures
 
+## Products handling
+First implementation is read products from csv file and put them to Map, 
+cause we'll mostly need getting product_name(value) by product_id(value).
+This implementation for 100K products was taking to initialize 504 milliseconds
+
+But when running the products in prod env, there might be required some product inserts and updates, so
+here we could use either some admin endpoint to affect our products Map. But another case could be store data in some DB 
+to avoid restarts.
+
 # How to run
+
+## Run jar file
+
+- download the project
+- run ``mvn clean install``
+- ``java -jar </path/to/the/application>/target/trade-enrichment-service-0.0.1-SNAPSHOT.jar``
+Where </path/to/the/application> is the path to the cloned repository.
 
 ## Send request
 
@@ -60,7 +76,13 @@ Here aare some gathered time metrics for following config:
 
 - chunk size: 1000 
 - thread pool core size: 10
-- 20 mil records = 3 min 9 seconds
-- 100 mil records = 33.5 seconds
+- 100 mil records = 3 min 9 seconds
+- 20 mil records = 33.5 seconds
 
 ![](./images/h2metrics.png)
+
+# Limitations to the service
+
+## Input file size
+
+the max input file size is set to 

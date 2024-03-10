@@ -1,6 +1,7 @@
 package com.verygoodbank.tes.web.controller;
 
 
+import com.verygoodbank.tes.exception.JobBusyException;
 import com.verygoodbank.tes.model.TradeEnriched;
 import com.verygoodbank.tes.service.batchImpl.resourceEnricher.ResourceEnricher;
 import com.verygoodbank.tes.service.simpleImpl.CSVWriterI;
@@ -8,6 +9,7 @@ import com.verygoodbank.tes.service.simpleImpl.trade.TradeEnricher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +36,9 @@ public class TradeEnrichmentController {
 
     @PostMapping(value = "/enrich", consumes = "multipart/form-data", produces = "text/csv")
     public ResponseEntity<FileSystemResource> enrichTrades(@RequestParam MultipartFile data) throws ExecutionException, InterruptedException {
+        if (resourceEnricher.isAlreadyRunning())
+            throw new JobBusyException();
+
         File file = resourceEnricher.processResource(data.getResource()).get();
         return ResponseEntity.ok()
                 .header("Content-Disposition", "attachment; filename=enrichedTrades.csv")
