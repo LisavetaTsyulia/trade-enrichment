@@ -11,11 +11,12 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class JobCompletionListener implements JobExecutionListener {
 
-    private final CompletableFuture<JobExecution> jobCompletionFuture = new CompletableFuture<>();
+    private CompletableFuture<JobExecution> jobCompletionFuture = new CompletableFuture<>();
 
     @Override
     public void afterJob(JobExecution jobExecution) {
         jobCompletionFuture.complete(jobExecution);
+        jobCompletionFuture = new CompletableFuture<>();
     }
 
 }
