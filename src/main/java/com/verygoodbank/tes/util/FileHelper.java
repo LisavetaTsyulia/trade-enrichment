@@ -9,10 +9,13 @@ import java.io.IOException;
 @UtilityClass
 public class FileHelper {
 
+    public final String TMP_PREFIX = "prefix-";
+    public final String TMP_SUFFIX = "-suffix";
+
     public File createTmpFile() {
         File tmpFile = null;
         try {
-            tmpFile = File.createTempFile("prefix-", "-suffix");
+            tmpFile = File.createTempFile(TMP_PREFIX, TMP_SUFFIX);
         } catch (IOException e) {
             throw new FileProcessingException(e);
         }

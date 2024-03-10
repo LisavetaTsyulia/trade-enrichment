@@ -3,7 +3,7 @@ package com.verygoodbank.tes.service.common.product.impl;
 import com.verygoodbank.tes.constant.TradeEnrichConstant;
 import com.verygoodbank.tes.model.Product;
 import com.verygoodbank.tes.service.common.product.ProductMapper;
-import com.verygoodbank.tes.service.common.CSVParserFile;
+import com.verygoodbank.tes.service.common.csvparser.CSVParserFile;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +16,7 @@ import java.util.Map;
 @Service
 public class InMemoryProductMapperImpl implements ProductMapper {
     boolean isInitialized = false;
-    Map<Integer, String> mapIdToName = new HashMap<>(); // we don't need concurrency handling here,
-    // only write on init and read may be in multi threads, but they are not changing anything
+    Map<Integer, String> mapIdToName = new HashMap<>();
 
     private final CSVParserFile<Product> productCSVParser;
 
@@ -42,7 +41,7 @@ public class InMemoryProductMapperImpl implements ProductMapper {
     public String mapIdToName(int id) {
         if (isInitialized) {
             return mapIdToName.getOrDefault(id, TradeEnrichConstant.MISSING_PRODUCT_NAME);
-        } // else wait until initialized?
+        }
         return "";
     }
 }

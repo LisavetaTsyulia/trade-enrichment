@@ -48,7 +48,7 @@ public class TradeEnrichmentController {
 
     @PostMapping(value = "/enrich/simple", consumes = "multipart/form-data", produces = "text/csv")
     public ResponseEntity<Resource> enrichTradesSimple(@RequestParam MultipartFile data) {
-        Collection<TradeEnriched> trades = tradeEnricher.enrichTradeWithProductName(data);
+        Collection<TradeEnriched> trades = tradeEnricher.enrichTradeWithProductName(data.getResource());
 
         File enrichedFile = csvWriter.persistToFile(trades);
 

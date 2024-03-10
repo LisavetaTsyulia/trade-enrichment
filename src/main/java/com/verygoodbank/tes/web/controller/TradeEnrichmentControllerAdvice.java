@@ -2,6 +2,7 @@ package com.verygoodbank.tes.web.controller;
 
 import com.verygoodbank.tes.exception.FileProcessingException;
 import com.verygoodbank.tes.exception.JobBusyException;
+import com.verygoodbank.tes.exception.ProductsInitializationException;
 import com.verygoodbank.tes.exception.TradeEnrichJobProcessingException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +34,13 @@ public class TradeEnrichmentControllerAdvice extends ResponseEntityExceptionHand
     @ExceptionHandler(FileProcessingException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleFileProcessingException(final RuntimeException ex) {
+        log.error(ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ProductsInitializationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<String> handleProductsInitializationException(final RuntimeException ex) {
         log.error(ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }

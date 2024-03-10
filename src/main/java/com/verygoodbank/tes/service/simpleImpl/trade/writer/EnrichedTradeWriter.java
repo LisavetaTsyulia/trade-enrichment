@@ -22,7 +22,7 @@ public class EnrichedTradeWriter implements CSVWriterI<TradeEnriched> {
     @Override
     public File persistToFile(final Collection<TradeEnriched> data) {
         File tmpFile = FileHelper.createTmpFile();
-        try (Writer writer  = new FileWriter(tmpFile)) {
+        try (Writer writer = new FileWriter(tmpFile)) {
             StatefulBeanToCsv<TradeEnriched> sbc = new StatefulBeanToCsvBuilder<TradeEnriched>(writer)
                     .withQuotechar('\'')
                     .withSeparator(CSVWriter.DEFAULT_SEPARATOR)

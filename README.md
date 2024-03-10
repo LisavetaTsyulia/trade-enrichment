@@ -85,4 +85,20 @@ Here aare some gathered time metrics for following config:
 
 ## Input file size
 
-the max input file size is set to 
+the max input file size is set to 5GB
+
+## Handling parallel rest requests
+
+Currently there is only 1 job bean and next rest request can be processed only if job is in completed state.
+Here we can go 2 ways:
+1) Configure running multiple jobs, here bean scopes could help or further investigating spring batch service and how to configure such scenarious. Here we should then also think about rate limits per IP, making sure we know limits to our application(if file limit is 5GB, how many requests we can handle, etc.).
+2) One thing that will happen using 1st option is that response time for requests will be more(if jobs will run in parallel processing data). So another way this service could work is by creating LoadBalancer, that will get requests from users, spawn several instances of this server(Workers), handling one request at a time. And Load Balancer will be aware of what services are busy now and transfer requests to free Worker.
+
+# Improvements to do
+
+- Investigating more into limitation "Handling parallel rest requests", implement 1st option, implement 2nd and check what is the better approach.
+- Making ProductMapper implementation based on some storage solution.
+- Better exception handling.
+- More test coverage.
+- More thinking about Thread safety.
+- Investigating and implementing Partitioning technique from Spring Batch framework: https://docs.spring.io/spring-batch/reference/scalability.html#partitioning, compare efficiency of application when using partitioning vs partitioning + multi-threaded Step that I use now https://docs.spring.io/spring-batch/reference/scalability.html#multithreadedStep
