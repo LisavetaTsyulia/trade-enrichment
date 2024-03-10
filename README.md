@@ -49,6 +49,12 @@ Following request example was launched from project folder
 
 ``curl -F data=@src/test/resources/trades20M.csv  --output enrichedTrades.csv --header 'Content-Type: multipart/form-data' -X POST http://localhost:8080/api/v1/enrich``
 
+## Send request simple solution for small files (opencsv, left to compare)
+
+Following request example was launched from project folder. Better not to run on 100 million data, OutOfMemory 
+
+``curl -F data=@src/test/resources/trade100k.csv  --output enrichedTrades.csv --header 'Content-Type: multipart/form-data' -X POST http://localhost:8080/api/v1/enrich/simple``
+
 ## Generation new test files
 
 `/script/main.py`
